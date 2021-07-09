@@ -4,7 +4,6 @@ const Campground = require('./models/campground');
 const Review = require('./models/review');
 
 module.exports.isLoggedIn = (req, res, next) => {
-    console.log("REQ.USER: ", req.user)
     if (!req.isAuthenticated()) {
         req.session.returnTo = req.originalUrl;
         req.flash('error', 'You must be signed in first!');
@@ -38,7 +37,6 @@ module.exports.isReviewAuthor = async (req, res, next) => {
     const { id, reviewId } = req.params;
     const review = await Review.findById(reviewId)
     if (!review.author.equals(req.user._id)) {
-        console.log('not allowed')
         req.flash('error', 'You do not have permission to do that!');
         return res.redirect(`/campgrounds/${id}`)
     }
